@@ -1,0 +1,102 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+@import url('https://fonts.googleapis.com/css?family=Adamina|Farro:400,500,700|Rambla:400,700|Sarala:400,700&display=swap');
+
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    // font-family: 'Adamina', serif;
+    // font-family: 'Sarala', sans-serif;
+    // font-family: 'Farro', sans-serif;
+    font-family: 'Rambla', sans-serif;
+    background-image: url('../images/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+
+.navbar-dark {
+    background-color: #233b5d;
+    width: 100%;    
+}
+
+.navbar-brand {
+    font-size: 2.7em;
+    color: white !important;
+}
+
+.navbar-brand:hover {
+    color: #B2CAFD !important;
+}
+
+.nav-item .nav-link {
+    font-size: 2.7em;
+    color: white !important;
+}
+
+.nav-link:hover {
+    color: #B2CAFD !important;
+}
+
+.noteInputLabel {
+    font-size: 2.5em;
+}
+
+.noteInput {
+    font-size: 2.5em;
+}
+
+.btn-primary {
+    background-color:  white;
+    color: rgb(15, 29, 44);
+    border-color:  rgb(15, 29, 44);
+}
+
+.btn-primary:hover {
+    background-color:  white;
+    color: orange;
+    border-color:  orange;
+}
+
+.noteInputButton {
+    background-color:  rgb(15, 29, 44);
+    color: white;
+    border-color:  rgb(15, 29, 44);
+    font-size: 2em;
+}
+
+.noteInputButton:hover {
+    background-color:  rgb(15, 29, 44);
+    border-color:  rgb(15, 29, 44);
+    color: orange;
+}
+
+.noteCheckboxLabel {
+    font-size: 1.75em;
+}
+
+
+.listHeader {
+    font-size: 2.5em;
+}
+
+.notesList {
+    font-size: 1.75em;
+}
+
+
+.card {
+    margin-top: 5em;
+    background-color: #233b5d;
+}
