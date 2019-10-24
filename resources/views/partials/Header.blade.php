@@ -10,6 +10,8 @@
 
     <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
 
+    @include('partials.Navbar')
+
 </head>
 <body>
   <div id="app">

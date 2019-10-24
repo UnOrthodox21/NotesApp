@@ -1,34 +1,30 @@
-<template id="note-list">
+<template>
+  <div class="container-fluid appInterface m-0 p-0" id="app" >
     <div class="row">
-        <div class="pull-right">
-            <router-link class="btn btn-xs btn-primary">
-                <span class="glyphicon glyphicon-plus"></span>
-                     Add new Note
-            </router-link>
-            <br></br>
-        </div>
-        <table class="table table-bordered">
+       
+
+        <table class="table mx-3">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Note Title</th>
-                    <th>Note Content</th>
-                    <th class="col-md-2">Actions</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Note Title</th>
+                    <th scope="col">Note Content</th>
+               
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(note, index) in filteredNotes">
-                    <td>{{ index + 1 }}</td>
+                    <td>{{ index +1 }}</td>
                     <td>{{ note.title }}</td>
                     <td> {{ note.content }}</td>
-                    <td>
-                    <router-link class="btn btn-info btn-xs" v-bind:to="{name: 'EditNote', params: {id: note.id}}">Edit</router-link>
-                    </td>
                 </tr>
-            
             </tbody>
-        
         </table>
+
+
+
+
+    </div>
     </div>
 </template>
 
@@ -47,7 +43,7 @@ export default {
     computed: {
         filteredNotes: function() {
             if(this.notes.length) {
-                return this.posts;
+                return this.notes;
             }
         }
     }
@@ -55,5 +51,17 @@ export default {
 </script>
 
 
+
+
+
+
 <style lang="css">
+
+th {
+    background-color: white;
+    color: #233b5d;
+    border: 3px solid #233b5d;
+    font-size: 1.1em;
+}
+
 </style>

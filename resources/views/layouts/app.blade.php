@@ -1,6 +1,6 @@
 @include('partials.Header')
 
-@include('partials.Navbar')
+
 
 
 <div class="content">

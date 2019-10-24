@@ -1,6 +1,6 @@
 <template>
-<div class="comtainer">
-<transition name-"fade">
+<div class="container-fluid mx-0 px-0">
+<transition name="fade">
 <router-view></router-view>
 </transition>
 </div>

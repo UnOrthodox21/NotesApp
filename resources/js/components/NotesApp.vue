@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid appInterface m-0 p-0" id="app" >
+  <div class="container-fluid appInterface m-0 p-0" id="NotesApp" >
         <div class="row h-100 m-0 p-0 appRow">
           <Navigation @change-note="changeNote" @new-note="newNote" :notes="notes" :activeNote="index" />
           <Note @save-note="saveNote" @delete-note="deleteNote" :note="notes[index]" />
@@ -29,10 +29,22 @@
         Navigation,
         Note
       },
-      data: () => ({
-        notes: [],
-        index: 0
-      }),
+   data: function() {
+        return {notes: '', index: 0};
+    },
+    created: function() {
+        let uri = 'http://notes.docker.lv/notes/';
+        Axios.get(uri).then((response) => {
+            this.notes = response.data;
+        });
+    },
+      computed: {
+        filteredNotes: function() {
+            if(this.notes.length) {
+                return this.notes;
+            }
+        }
+     },
       methods: {
         newNote () {
           this.notes.push({
@@ -56,7 +68,7 @@
     </script>
 
     <style>
-      html, body, #app {
+      html, body, #NotesApp {
         height: 100%;
     }
 
@@ -71,3 +83,6 @@
     }
 
     </style>
+
+
+    

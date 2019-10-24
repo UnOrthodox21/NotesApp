@@ -15,15 +15,16 @@ window.VueAxios=require('vue-axios').default;
 
 window.Axios=require('axios').default;
 
-let AppLayout = require('./components/App.vue');
+let AppLayout = require('./app.vue').default;
 
 
 Vue.use(VueRouter, VueAxios, axios);
 
 // importing Modules
-import NotesApp from './components/NotesApp.vue';
-import NotesList from './components/NotesList.vue';
-import EditNote from './components/EditNote.vue';
+
+const NotesApp  = Vue.component('NotesApp', require('./components/NotesApp.vue').default);
+const NotesList  = Vue.component('NotesList', require('./components/NotesList.vue').default);
+const EditNote =  Vue.component('EditNote', require('./components/EditNote.vue').default);
 
 
 
