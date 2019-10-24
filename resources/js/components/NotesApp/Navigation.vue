@@ -1,5 +1,5 @@
  <template>
-        <div class="col-4 p-0 m-0 notelist">
+        <div class="col-4 p-0 m-0 navigation">
             <ul>
                 <li v-for="(note, index) of notes" class="note" v-bind:class="{ 'active': index === activeNote }" @click="changeNote(index)">
                     <div>{{note.title}}</div>
@@ -11,7 +11,7 @@
 
     <script>
       export default {
-        name: 'Notelist',
+        name: 'Navigation',
         props: ['notes', 'activeNote'],
         methods: {
           changeNote (index) {
@@ -28,7 +28,7 @@
 
     <style scoped>
 
-        .notelist {
+        .navigation {
               min-height: 100%;
               height: 100%;
         }

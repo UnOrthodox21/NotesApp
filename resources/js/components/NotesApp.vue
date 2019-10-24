@@ -1,10 +1,14 @@
 <template>
   <div class="container-fluid appInterface m-0 p-0" id="app" >
         <div class="row h-100 m-0 p-0 appRow">
-          <Notelist @change-note="changeNote" @new-note="newNote" :notes="notes" :activeNote="index" />
+          <Navigation @change-note="changeNote" @new-note="newNote" :notes="notes" :activeNote="index" />
           <Note @save-note="saveNote" @delete-note="deleteNote" :note="notes[index]" />
         </div>
+         <div class="row h-100 m-0 p-0 appRow">
+              <router-link class="btn btn-m btn-primary manageNotes ml-auto" v-bind:to="{name: 'NotesList' }">Manage all Notes</router-link>
+        </div>
       </div>
+
 </template>
 
 <script>
@@ -17,13 +21,12 @@
 
 
     <script>
-    import Notelist from './Notelist'
-    import Note from './Note'
+    import Navigation from './NotesApp/Navigation.vue'
+    import Note from './NotesApp/Note.vue'
 
     export default {
-      name: 'app',
       components: {
-        Notelist,
+        Navigation,
         Note
       },
       data: () => ({
