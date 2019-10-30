@@ -11102,7 +11102,7 @@ a.text-dark:focus {
 
 html,
 body {
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -11145,13 +11145,13 @@ body {
   font-size: 2.5em;
 }
 
-.btn-primary {
+.btn-notes {
   background-color: white;
   color: #0f1d2c;
   border-color: #0f1d2c;
 }
 
-.btn-primary:hover {
+.btn-notes:hover {
   background-color: white;
   color: orange;
   border-color: orange;

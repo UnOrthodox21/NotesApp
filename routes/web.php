@@ -12,15 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('api');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/', 'NotesController@home');
-
-Route::resource('/notes', 'NotesController');
 
 

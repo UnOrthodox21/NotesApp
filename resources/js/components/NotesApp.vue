@@ -1,11 +1,11 @@
-<template>
+<template id="NotesApp">
   <div class="container-fluid appInterface m-0 p-0" id="NotesApp" >
         <div class="row h-100 m-0 p-0 appRow">
           <Navigation @change-note="changeNote" @new-note="newNote" :notes="notes" :activeNote="index" />
           <Note @save-note="saveNote" @delete-note="deleteNote" :note="notes[index]" />
         </div>
          <div class="row h-100 m-0 p-0 appRow">
-              <router-link class="btn btn-m btn-primary manageNotes ml-auto" v-bind:to="{name: 'NotesList' }">Manage all Notes</router-link>
+              <router-link class="btn btn-m btn-notes manageNotes ml-auto" v-bind:to="{name: 'NotesList' }">Manage all Notes</router-link>
         </div>
       </div>
 
@@ -29,45 +29,90 @@
         Navigation,
         Note
       },
-   data: function() {
-        return {notes: '', index: 0};
+
+      data: function() {
+
+        return {
+          notes: '',
+          presetnote: {
+            title: 'Inserted title',
+            content: 'Inserted content',
+            user_id: 1,
+            is_public: 1
+          },
+          index: 0
+          };
+
     },
-    created: function() {
+    
+      created: function() {
+
         let uri = 'http://notes.docker.lv/notes/';
         Axios.get(uri).then((response) => {
             this.notes = response.data;
+ 
         });
-    },
+
+
+
+
+   },
+
       computed: {
+
         filteredNotes: function() {
+
             if(this.notes.length) {
                 return this.notes;
             }
         }
+
      },
+
+
       methods: {
-        newNote () {
-          this.notes.push({
-            title: `${this.notes.length+1}. Note`,
-            content: ''
-          })
-          this.index = this.notes.length - 1
+
+        newNote: function() {
+
+          let uri = 'http://notes.docker.lv/notes/';
+          Axios.post(uri, this.presetnote);
+          Axios.get(uri).then((response) => {
+            this.notes = response.data;
+          });
+
+          this.index = this.notes.length;
+
         },
-        changeNote (index) {
+
+        changeNote: function(index) {
+
           this.index = index
+
+
         },
-        saveNote () {
-           // nothing as of yet
+
+        saveNote: function() {
+           
         },
-        deleteNote () {
-          this.notes.splice(this.index, 1)
-          this.index = Math.max(this.index - 1, 0)
-        }
+
+        deleteNote: function() {
+
+
+        },
+
       }
     }
     </script>
 
+
+
+
+
+
+
+
     <style>
+
       html, body, #NotesApp {
         height: 100%;
     }

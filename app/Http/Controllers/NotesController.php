@@ -31,7 +31,8 @@ class NotesController extends Controller
      */
     public function create()
     {
-        
+        $note = Note::create($request->all());
+        return $note;
     }
 
     /**
@@ -42,8 +43,12 @@ class NotesController extends Controller
      */
     public function store(Request $request)
     {
-        $note = Note::create($request->all());
-        return $note;
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+        ]);
+
+        $create = Note::create($request->all());
     }
 
     /**
@@ -91,8 +96,7 @@ class NotesController extends Controller
      */
     public function destroy($id)
     {
-        $note = findOrFail($id);
+        $note = Note::findOrFail($id);
         $note->delete();
-        return '';
     }
 }

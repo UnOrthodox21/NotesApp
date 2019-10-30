@@ -19,4 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // Route::resource('/notes', 'NotesController');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/tasks', 'TasksController@index');
+
+
+Route::post('/tasks', 'TasksController@store');
+
+Route::patch('/tasks/{task}', 'TasksController@update');
+Route::patch('/tasksCheckAll', 'TasksController@updateAll');
+
+Route::delete('/tasks/{task}', 'TasksController@destroy');
+Route::delete('/tasksDeleteCompleted', 'TasksController@destroyCompleted');
