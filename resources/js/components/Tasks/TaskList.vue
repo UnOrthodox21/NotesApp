@@ -1,8 +1,9 @@
 <template>
   <div class="container-fluid my-3 px-5">
+    <h2>Welcome, {{ name }}</h2>
     <input type="text" class="task-input" placeholder="What needs to be done" v-model="newTask" @keyup.enter="addTask">
     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-    <task-item v-for="task in tasksFiltered" :key="task.id" :task="task" :checkAll="!anyRemaining">
+    <task-item v-for="task in tasksFiltered" :key="task.id" :task="task" :checkAll="!anyRemainingTasks">
     </task-item>
     </transition-group>
 
@@ -42,15 +43,19 @@ export default {
     return {
       newTask: '',
       idForTask: 3,
-
+      name: '',
     }
   },
   created() {
-    this.$store.dispatch('retrieveTasks');
+    this.$store.dispatch('retrieveTasks')
+     this.$store.dispatch('retrieveName')
+     .then(response => {
+       this.name = response.data.name;
+     })
   },
   computed: {
-    anyRemaining() {
-      return this.$store.getters.anyRemaining
+    anyRemainingTasks() {
+      return this.$store.getters.anyRemainingTasks
     },
     tasksFiltered() {
       return this.$store.getters.tasksFiltered
@@ -73,8 +78,6 @@ export default {
 </script>
 
 <style>
-
-    @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
 
     .task-input {
         width: 100%;

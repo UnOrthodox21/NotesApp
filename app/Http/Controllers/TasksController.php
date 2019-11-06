@@ -14,7 +14,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        return Task::all();
+        return auth()->user()->tasks;
     }
 
     /**
@@ -30,7 +30,11 @@ class TasksController extends Controller
            'completed' => 'required|boolean',
        ]);
 
-       $task = Task::create($data);
+       $task = Task::create([
+           'user_id' => auth()->user()->id,
+           'title' => $request->title,
+           'completed' => $request->completed,
+       ]);
 
        return response($task, 201);
 
@@ -46,6 +50,14 @@ class TasksController extends Controller
      */
     public function update(Request $request, Task $task)
     {
+
+
+        if ($task->user_id != auth()->user()->id) {
+            return response()->json('Unauthorized', 401);
+        }
+
+
+
        $data = $request->validate([
             'title' => 'required|string',
             'completed' => 'required|boolean',
@@ -56,15 +68,17 @@ class TasksController extends Controller
         return response($task, 200);
     }
 
+
+
     public function updateAll(Request $request) 
     {
         $data = $request->validate([
             'completed' => 'required|boolean',
         ]);
 
-        Task::query()->update($data);
+        Task::where('user_id', auth()->user()->id)->update($data);
 
-        return response('updated', 200);
+        return response()->json('Updated', 200);
     }
 
 
@@ -79,6 +93,11 @@ class TasksController extends Controller
      */
     public function destroy(Task $task)
     {
+
+        if ($task->user_id != auth()->user()->id) {
+            return response()->json('Unauthorized', 401);
+        }
+
         $task->delete();
         
         return response('Deleted task item', 200);
@@ -86,13 +105,34 @@ class TasksController extends Controller
 
     public function destroyCompleted(Request $request)
     {
+
+        // [6,9] task ids we are passing and want to delete
+
+        // [5,6,9] all of the users task ids
+
+
+        $tasksToDelete = $request->tasks;
+
+        $userTaskIds = auth()->user()->tasks->map(function ($task) {
+            return $task->id;
+        });
+
+        $valid = collect($tasksToDelete)->every(function ($value, $key) use ($userTaskIds){
+            return $userTaskIds->contains($value);
+        });
+
+        if(!$valid) {
+            return response()->json('Unauthorized', 401);
+        }
+
+
        $request->validate([
-            'tasks' => 'required|array'
+            'tasks' => 'required|array',
         ]);
 
-            Task::destroy($request->tasks);
+        Task::destroy($request->tasks);
 
-        return response('Deleted completed task items', 200);
+        return response()->json('Deleted completed task items', 200);
     }
 
 }

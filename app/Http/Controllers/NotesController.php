@@ -14,25 +14,9 @@ class NotesController extends Controller
      */
 
 
-     public function home() {
-         return view('notesApp');
-     }
-
-
     public function index()
     {
         return Note::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $note = Note::create($request->all());
-        return $note;
     }
 
     /**
@@ -43,60 +27,76 @@ class NotesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'content' => 'required',
-        ]);
+      $data = $request->validate([
+           'title' => 'required|string',
+           'completed' => 'required|boolean',
+       ]);
 
-        $create = Note::create($request->all());
+       $note = Note::create($data);
+
+       return response($note, 201);
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return Note::findOrFail($id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Note $note)
     {
-        $note = Note::findOrFail($id);
-        $note->update($request->all());
-
-        return $note;
+       $data = $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'completed' => 'required|boolean',
+            'user_id' => 'required|integer',
+            'is_public' => 'required|boolean',
+        ]);
+ 
+        $note->update($data);
+ 
+        return response($note, 200);
     }
+
+    public function updateAll(Request $request) 
+    {
+        $data = $request->validate([
+            'completed' => 'required|boolean',
+        ]);
+
+        Note::query()->update($data);
+
+        return response('updated', 200);
+    }
+
+
+
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Note $note)
     {
-        $note = Note::findOrFail($id);
         $note->delete();
+        
+        return response('Deleted note item', 200);
+    }
+
+    public function destroyCompleted(Request $request)
+    {
+       $request->validate([
+            'notes' => 'required|array'
+        ]);
+
+            Note::destroy($request->notes);
+
+        return response('Deleted completed note items', 200);
     }
 }

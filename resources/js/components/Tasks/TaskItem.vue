@@ -6,7 +6,6 @@
         <input v-else class="task-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
     </div> <!-- end task-item-left -->
     <div>
-      <button @click="pluralize">Plural</button>
       <span class="remove-item" @click="removeTask(task.id)">
         &times;
       </span>
@@ -78,18 +77,6 @@ export default {
       this.title = this.beforeEditCache
       this.editing = false
     },
-    pluralize() {
-      eventBus.$emit('pluralize')
-    },
-    handlePluralize() {
-      this.title = this.title + 's'
-      this.$store.dispatch('updateTask', {
-        'id': this.id,
-        'title': this.title,
-        'completed': this.completed,
-        'editing': this.editing,
-      })
     }
-  }
 }
 </script>

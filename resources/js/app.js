@@ -9,22 +9,73 @@
 require('./bootstrap');
 
 import Vue from 'vue'
-import App from './App'
+import VueRouter from 'vue-router'
+import routes from './routes'
+import Master from './components/layouts/Master.vue'
 import { store } from './store/store'
+import CxltToastr from 'cxlt-vue2-toastr'
+
+
+
+var toastrConfigs = {
+  position: 'bottom right',
+  showDuration: 2000,
+  timeOut: 5000,
+  progressBar: true,
+}
 
 
 window.eventBus = new Vue()
 
 Vue.config.devtools = true;
 
+
 Vue.config.productionTip = false
+
+
+Vue.use(VueRouter)
+Vue.use(CxltToastr, toastrConfigs)
+
+
+const router = new VueRouter ({
+    routes,
+    mode: 'history'
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      // this route requires auth, check if logged in
+      // if not, redirect to login page.
+      if (!store.getters.loggedIn) {
+        next({
+          name: 'login',
+        })
+      } else {
+        next()
+      }
+    }  else if (to.matched.some(record => record.meta.requiresVisitor)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (store.getters.loggedIn) {
+          next({
+            name: 'tasks',
+          })
+        } else {
+          next()
+        }
+    } else {
+        next()
+    }
+  })
+
 
 
 new Vue({
   el: '#app',
+  router: router,
   store: store,
-  components: { App },
-  template: '<App/>'
+  components: { Master },
+  template: '<Master/>'
 })
 
 

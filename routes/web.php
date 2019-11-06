@@ -15,8 +15,7 @@ Route::get('/', function () {
     return view('api');
 });
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-
+Route::get('/{vue_capture?}', function () {
+    return view('api');
+})->where('vue_capture', '[\/\w\.-]*');

@@ -7,15 +7,34 @@ axios.defaults.baseURL = 'http://notes.docker.lv/api'
 
 export const store = new Vuex.Store({
   state: {
+    token: localStorage.getItem('access_token') || null,
     filter: 'all',
     tasks: []
   },
+
+  
   getters: {
-    remaining(state) {
+
+
+// Auth Getters
+
+    loggedIn(state) {
+      return state.token != null
+    },
+
+
+// Notes Getters
+
+
+
+
+// Tasks Getters
+
+    remainingTasks(state) {
       return state.tasks.filter(task => !task.completed).length
     },
-    anyRemaining(state, getters) {
-      return getters.remaining != 0
+    anyRemainingTasks(state, getters) {
+      return getters.remainingTasks != 0
     },
     tasksFiltered(state) {
       if (state.filter == 'all') {
@@ -31,7 +50,30 @@ export const store = new Vuex.Store({
       return state.tasks.filter(task => task.completed).length > 0
     }
   },
+
+
+
   mutations: {
+
+
+// Auth Mutations
+
+retrieveToken(state, token) {
+  state.token = token;
+},
+
+
+destroyToken(state) {
+  state.token = null;
+},
+
+
+ // Task Mutations
+
+  clearTasks(state) {
+  state.tasks = [];
+},
+
     addTask(state, task) {
       state.tasks.push({
         id: task.id,
@@ -53,21 +95,119 @@ export const store = new Vuex.Store({
       const index = state.tasks.findIndex(item => item.id == id)
       state.tasks.splice(index, 1)
     },
-    checkAll(state, checked) {
+    checkAllTasks(state, checked) {
       state.tasks.forEach(task => (task.completed = checked))
     },
-    updateFilter(state, filter) {
+    updateTasksFilter(state, filter) {
       state.filter = filter
     },
-    clearCompleted(state) {
+    clearCompletedTasks(state) {
       state.tasks = state.tasks.filter(task => !task.completed)
     },
     retrieveTasks(state, tasks) {
       state.tasks = tasks;
-    }
+    },
+   
   },
+
+
+
   actions: {
+
+
+// Auth Actions
+
+
+    register(context, data) {
+      return new Promise((resolve, reject) => {
+
+        axios.post('/register', {
+          name: data.name,
+          email: data.email,
+          password: data.password
+        })
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+
+   retrieveToken(context, credentials) {
+
+    return new Promise((resolve, reject) => {
+
+    axios.post('/login', {
+      username: credentials.username,
+      password: credentials.password,
+    })
+    .then(response => {
+      const token = response.data.access_token
+
+      localStorage.setItem('access_token', token)
+      context.commit('retrieveToken', token)
+      resolve(response)
+    })
+    .catch(error => {
+      console.log(error)
+      reject(error)
+    })
+  })
+  },
+
+  destroyToken(context) {
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+
+    if(context.getters.loggedIn) {
+
+      return new Promise((resolve, reject) => {
+
+        axios.post('/logout')
+        .then(response => {
+    
+          localStorage.removeItem('access_token')
+          context.commit('destroyToken')
+          resolve(response)
+        })
+        .catch(error => {
+          localStorage.removeItem('access_token')
+          context.commit('destroyToken')
+          reject(error)
+        })
+      })
+    }
+
+  },
+
+  retrieveName(context) {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+   
+    return new Promise((resolve, reject) => {
+
+      axios.get('/user')
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+
+// Note Actions
+
+
+
+// Task Actions
+
     retrieveTasks(context) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/tasks')
       .then(response => {
         context.commit('retrieveTasks', response.data)
@@ -75,6 +215,9 @@ export const store = new Vuex.Store({
       .catch(error => {
         console.log(error)
       })
+    },
+    clearTasks(context) {
+      context.commit('clearTasks')
     },
     addTask(context, task) {
       axios.post('/tasks', {
@@ -109,22 +252,22 @@ export const store = new Vuex.Store({
         console.log(error)
       })
     },
-    checkAll(context, checked) {
+    checkAllTasks(context, checked) {
       axios.patch('/tasksCheckAll', {
        completed: checked,
       })
       .then(response => {
-        context.commit('checkAll', checked)
+        context.commit('checkAllTasks', checked)
       })
       .catch(error => {
         console.log(error)
       })
     },
-    updateFilter(context, filter) {
-        context.commit('updateFilter', filter)
+    updateTasksFilter(context, filter) {
+        context.commit('updateTasksFilter', filter)
     },
-    clearCompleted(context) {
 
+    clearCompletedTasks(context) {
       const completed = store.state.tasks
       .filter(task => task.completed)
       .map(task => task.id)
@@ -135,12 +278,14 @@ export const store = new Vuex.Store({
         }
       })
       .then(response => {
-        context.commit('clearCompleted')
+        context.commit('clearCompletedTasks')
       })
       .catch(error => {
         console.log(error)
       })
 
-    }
+    },
+
+
   }
 })

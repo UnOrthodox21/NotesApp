@@ -1,5 +1,5 @@
-<template id="NotesApp">
-  <div class="container-fluid appInterface m-0 p-0" id="NotesApp" >
+<template id="Notes">
+  <div class="page-wrapper container-fluid appInterface m-0 p-0" id="NotesApp" >
         <div class="row h-100 m-0 p-0 appRow">
           <Navigation @change-note="changeNote" @new-note="newNote" :notes="notes" :activeNote="index" />
           <Note @save-note="saveNote" @delete-note="deleteNote" :note="notes[index]" />
@@ -21,8 +21,8 @@
 
 
     <script>
-    import Navigation from './NotesApp/Navigation.vue'
-    import Note from './NotesApp/Note.vue'
+    import Navigation from './Notes/Navigation.vue'
+    import Note from './Notes/Note.vue'
 
     export default {
       components: {
@@ -113,7 +113,7 @@
 
     <style>
 
-      html, body, #NotesApp {
+      html, body, #Notes {
         height: 100%;
     }
 

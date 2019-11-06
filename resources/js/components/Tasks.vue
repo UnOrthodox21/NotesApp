@@ -1,5 +1,5 @@
 <template>
-<div id="app" class="container-fluid">
+<div class="page-wrapper container-fluid">
 <transition name="fade">
  <task-list></task-list>
 </transition>
@@ -8,10 +8,10 @@
 
 
 <script>
-import TaskList  from './components/TaskList'
+import TaskList  from './Tasks/TaskList'
 
 export default {
- name: "App",
+ name: "Tasks",
  components: {
    TaskList
  }

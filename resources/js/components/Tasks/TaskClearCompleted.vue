@@ -1,5 +1,5 @@
 <template>
-  <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
+  <button v-if="showClearCompletedButton" @click="clearCompletedTasks">Clear Completed</button>
 </template>
 
 <script>
@@ -11,8 +11,8 @@ export default {
     }
   },
   methods: {
-    clearCompleted() {
-      this.$store.dispatch('clearCompleted')
+    clearCompletedTasks() {
+      this.$store.dispatch('clearCompletedTasks')
     }
   }
 }
