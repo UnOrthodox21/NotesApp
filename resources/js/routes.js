@@ -1,6 +1,7 @@
 import Home from './components/Home'
 import Tasks from './components/Tasks'
 import Notes from './components/Notes'
+import NotesList from './components/Notes/NotesList'
 import About from './components/About'
 import Login from './components/auth/Login'
 import Logout from './components/auth/Logout'
@@ -60,6 +61,11 @@ const routes = [
         path: '/tasks/:id', 
         name: 'tasks',
         component: TestTasksVariable 
+    },
+    {
+        path: '/notes/list', 
+        name: 'notes-list',
+        component: NotesList
     }
 
 ]

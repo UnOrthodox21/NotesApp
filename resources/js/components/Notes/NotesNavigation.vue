@@ -10,8 +10,15 @@
     </template>
 
     <script>
+
+
+
+
+
+
+
       export default {
-        name: 'Navigation',
+        name: 'notes-navigation',
         props: ['notes', 'activeNote'],
         methods: {
           changeNote (index) {
@@ -26,8 +33,12 @@
 
 
 
-    <style scoped>
 
+
+
+
+
+    <style scoped>
         .navigation {
               min-height: 100%;
               height: 100%;

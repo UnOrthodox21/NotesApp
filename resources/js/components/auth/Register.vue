@@ -4,7 +4,7 @@
 
 <div class="page-wrapper col-12 col-md-3  loginContainer text-center mx-auto mt-5 py-5">
     
-    <h2 class="login-heading text-uppercase mt-5">Register</h2>
+    <h2 class="auth-heading mt-5">Register</h2>
 
        <div v-if="serverErrors" class="server-error">
             <div v-for="(value, key) in serverErrors" :key="key">
@@ -30,7 +30,7 @@
         </div>
     
     <div class="form-group">
-        <button type="submit" class="btn btn-primary login-button mt-4">Register</button>
+        <button type="submit" class="btn btn-primary login-button mt-4 w-100">Register</button>
     </div>
     
     
@@ -101,6 +101,16 @@ label {
 
 .login-button {
     font-size: 1.5em;
+    background-color: #233b5d;
+    border-color: white;
+    border-width: 0.20em;
+    border-radius: 5%;
+}
+
+.login-button:hover {
+    background-color: #233b5d;
+    color: #30b8a6;
+    border-color: #30b8a6;
 }
 
 </style>

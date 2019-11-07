@@ -11,9 +11,14 @@
         </div>
     </template>
 
+
+
+
+
+
     <script>
       export default {
-        name: 'Note',
+        name: 'note-form',
         props: ['note'],
         methods: {
           deleteNote () {
@@ -26,9 +31,18 @@
       }
     </script>
 
-    <style scoped>
-    
 
+
+
+
+
+
+
+
+
+
+
+    <style scoped>
         .content, .title {
             background-color: #C3D4F2;
             border-radius: 0.25em;

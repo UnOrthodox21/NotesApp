@@ -8,13 +8,32 @@ axios.defaults.baseURL = 'http://notes.docker.lv/api'
 export const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null,
-    filter: 'all',
-    tasks: []
+    notes: [
+      {
+        title: 'Say hi', 
+        content: 'Hey you', 
+        user_id: 2, 
+        is_public: 0,
+      },
+      {
+      title: 'Make food', 
+      content: 'You have to wash the dishes', 
+      user_id: 2, 
+      is_public: 0,
+      },
+      {
+      title: 'Clean the room', 
+      content: 'You have to clean the room', 
+      user_id: 2, 
+      is_public: 0,
+      },
+    ],
+    tasks: [],
+    filter: 'all'
   },
 
   
   getters: {
-
 
 // Auth Getters
 
@@ -24,9 +43,9 @@ export const store = new Vuex.Store({
 
 
 // Notes Getters
-
-
-
+  retrieveNotes(state) {
+    return state.notes;
+  },
 
 // Tasks Getters
 
@@ -66,6 +85,13 @@ retrieveToken(state, token) {
 destroyToken(state) {
   state.token = null;
 },
+
+
+
+
+// Notes Mutations
+
+
 
 
  // Task Mutations
@@ -200,7 +226,10 @@ destroyToken(state) {
   },
 
 
+
 // Note Actions
+
+
 
 
 

@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid my-3 px-5">
-    <h2>Welcome, {{ name }}</h2>
+      <h1 class="pageHeader text-center my-5">Tasks</h1>
     <input type="text" class="task-input" placeholder="What needs to be done" v-model="newTask" @keyup.enter="addTask">
     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
     <task-item v-for="task in tasksFiltered" :key="task.id" :task="task" :checkAll="!anyRemainingTasks">
@@ -31,7 +31,7 @@ import TaskCheckAll from './TaskCheckAll'
 import TaskFiltered from './TaskFiltered'
 import TaskClearCompleted from './TaskClearCompleted'
 export default {
-  name: 'task-list',
+  name: 'tasks-app',
   components: {
     TaskItem,
     TaskItemsRemaining,
@@ -42,16 +42,11 @@ export default {
   data() {
     return {
       newTask: '',
-      idForTask: 3,
-      name: '',
+   
     }
   },
   created() {
     this.$store.dispatch('retrieveTasks')
-     this.$store.dispatch('retrieveName')
-     .then(response => {
-       this.name = response.data.name;
-     })
   },
   computed: {
     anyRemainingTasks() {
@@ -84,11 +79,12 @@ export default {
         padding: 10px 18px;
         font-size: 1.5em;
         margin-bottom: 16px;
-    }
-
+        outline: 0;
 
     &:focus {
         outline: 0;
+    }
+
     }
 
     .task-item {
@@ -102,15 +98,13 @@ export default {
 
     .remove-item {
         cursor: pointer;
+        font-size: 2em;
         margin-left: 14px;
-        &:hover {
-            color: black;
-        }
     }
 
 
      .remove-item:hover {
-        color: red;
+        color: #ff3337;
     }
 
     .task-item-left {
@@ -123,21 +117,58 @@ export default {
         margin-left: 12px;
         width: 100%;
         padding: 10px;
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        padding: 10px;
-        border: 1px solid lightblue;
+        border: none;
     }
 
+textarea:focus, input:focus{
+    outline-style: solid;
+    outline-color: #30b8a6;
+    outline-width: 2px;
+}
     .task-item-edit {
         font-size: 24px;
         background: none;
-        color: white;
+        color: #30b8a6;
         margin-left: 12px;
         width: 100%;
         padding: 10px;
-        border: 1px solid #ccc;
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        border: none;
     }
+
+
+  .btn-tasks {
+    font-size: 1.75em;
+    background-color: white;
+    color: rgb(15, 29, 44);
+    border-radius: 7.5%;
+}
+
+
+  .btn-tasks:hover {
+    background-color: #233b5d;
+    color: white;
+    border-color: #233b5d;
+}
+
+  .btn-tasks:focus {
+      outline: none;
+    }
+
+
+  .btn-tasks-clear:hover {
+    color: #ff3337;
+  }
+
+  .active {
+    background: #233b5d;
+    border-color: #233b5d;
+    color: #30b8a6;
+  }
+
+  .active:hover {
+    background-color:#233b5d;
+  }
+
 
     .completed {
         text-decoration: line-through;
@@ -160,18 +191,6 @@ export default {
         appearance: none;
     }
 
-    &:hover {
-        background: lightgreen;
-    }
-
-    &:focus {
-        outline: none;
-    }
-
-
-    .active {
-        background: lightgreen;
-    }
 
      .fade-enter-active, .fade-leave-active {
         transition: opacity 0.2s;

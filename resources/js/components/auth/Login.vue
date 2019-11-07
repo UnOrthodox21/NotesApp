@@ -4,7 +4,7 @@
 
 <div class="page-wrapper col-12 col-md-3 loginContainer text-center mx-auto mt-5 py-5">
     
-    <h2 class="login-heading text-uppercase mt-5 mb-5">Login</h2>
+    <h2 class="auth-heading mt-5 mb-5">Login</h2>
 
     <form action='#' @submit.prevent="login">
 

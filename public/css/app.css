@@ -11121,20 +11121,36 @@ body {
 
 .navbar-brand {
   font-size: 2.7em;
+  font-weight: bold;
   color: #ebe6e6 !important;
 }
 
 .navbar-brand:hover {
-  color: white !important;
+  color: #30b8a6 !important;
 }
 
 .nav-item .nav-link {
   font-size: 2.7em;
+  font-weight: bold;
   color: #ebe6e6 !important;
 }
 
+.active {
+  color: #30b8a6 !important;
+}
+
 .nav-link:hover {
-  color: white !important;
+  color: #30b8a6 !important;
+}
+
+.auth-heading {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.pageHeader {
+  font-size: 4em;
+  font-weight: bold;
 }
 
 .noteInputLabel {
@@ -11143,6 +11159,10 @@ body {
 
 .noteInput {
   font-size: 2.5em;
+}
+
+.aboutList {
+  font-size: 1.75em;
 }
 
 .btn-notes {
