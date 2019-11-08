@@ -7,12 +7,12 @@ export default {
   name: 'task-check-all',
   computed: {
     anyRemainingTasks() {
-      return this.$store.getters.anyRemainingTasks
+      return this.$store.getters['tasks/anyRemainingTasks']
     }
   },
   methods: {
     allChecked() {
-      this.$store.dispatch('checkAllTasks', event.target.checked)
+      this.$store.dispatch('tasks/checkAllTasks', event.target.checked)
     }
   }
 }

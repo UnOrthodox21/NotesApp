@@ -1,5 +1,6 @@
 <template>
-  <div class="container-fluid my-3 px-5">
+  <div class="container-fluid my-3">
+      <div class="col-8 mx-auto px-0">
       <h1 class="pageHeader text-center my-5">Tasks</h1>
     <input type="text" class="task-input" placeholder="What needs to be done" v-model="newTask" @keyup.enter="addTask">
     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
@@ -21,6 +22,7 @@
         </transition>
       </div>
     </div> <!-- end extra-container -->
+    </div>
   </div>
 </template>
 
@@ -46,14 +48,14 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('retrieveTasks')
+    this.$store.dispatch('tasks/retrieveTasks')
   },
   computed: {
     anyRemainingTasks() {
-      return this.$store.getters.anyRemainingTasks
+      return this.$store.getters['tasks/anyRemainingTasks']
     },
     tasksFiltered() {
-      return this.$store.getters.tasksFiltered
+      return this.$store.getters['tasks/tasksFiltered']
     }
   },
   methods: {
@@ -61,7 +63,7 @@ export default {
       if (this.newTask.trim().length == 0) {
         return
       }
-      this.$store.dispatch('addTask', {
+      this.$store.dispatch('tasks/addTask', {
         id: this.idForTask,
         title: this.newTask,
       })
@@ -80,11 +82,6 @@ export default {
         font-size: 1.5em;
         margin-bottom: 16px;
         outline: 0;
-
-    &:focus {
-        outline: 0;
-    }
-
     }
 
     .task-item {

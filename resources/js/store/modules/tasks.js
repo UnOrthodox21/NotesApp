@@ -1,51 +1,20 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import axios from 'axios'
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
+};
 
-Vue.use(Vuex)
-axios.defaults.baseURL = 'http://notes.docker.lv/api'
+namespaced: true;
 
-export const store = new Vuex.Store({
-  state: {
-    token: localStorage.getItem('access_token') || null,
-    notes: [
-      {
-        title: 'Say hi', 
-        content: 'Hey you', 
-        user_id: 2, 
-        is_public: 0,
-      },
-      {
-      title: 'Make food', 
-      content: 'You have to wash the dishes', 
-      user_id: 2, 
-      is_public: 0,
-      },
-      {
-      title: 'Clean the room', 
-      content: 'You have to clean the room', 
-      user_id: 2, 
-      is_public: 0,
-      },
-    ],
+const state =  {
     tasks: [],
     filter: 'all'
-  },
+  };
 
   
-  getters: {
-
-// Auth Getters
-
-    loggedIn(state) {
-      return state.token != null
-    },
-
-
-// Notes Getters
-  retrieveNotes(state) {
-    return state.notes;
-  },
+const getters = {
 
 // Tasks Getters
 
@@ -68,31 +37,11 @@ export const store = new Vuex.Store({
     showClearCompletedButton(state) {
       return state.tasks.filter(task => task.completed).length > 0
     }
-  },
+  };
 
 
 
-  mutations: {
-
-
-// Auth Mutations
-
-retrieveToken(state, token) {
-  state.token = token;
-},
-
-
-destroyToken(state) {
-  state.token = null;
-},
-
-
-
-
-// Notes Mutations
-
-
-
+const mutations = {
 
  // Task Mutations
 
@@ -134,104 +83,11 @@ destroyToken(state) {
       state.tasks = tasks;
     },
    
-  },
+  };
 
 
 
-  actions: {
-
-
-// Auth Actions
-
-
-    register(context, data) {
-      return new Promise((resolve, reject) => {
-
-        axios.post('/register', {
-          name: data.name,
-          email: data.email,
-          password: data.password
-        })
-        .then(response => {
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-      })
-    },
-
-
-   retrieveToken(context, credentials) {
-
-    return new Promise((resolve, reject) => {
-
-    axios.post('/login', {
-      username: credentials.username,
-      password: credentials.password,
-    })
-    .then(response => {
-      const token = response.data.access_token
-
-      localStorage.setItem('access_token', token)
-      context.commit('retrieveToken', token)
-      resolve(response)
-    })
-    .catch(error => {
-      console.log(error)
-      reject(error)
-    })
-  })
-  },
-
-  destroyToken(context) {
-
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-
-
-    if(context.getters.loggedIn) {
-
-      return new Promise((resolve, reject) => {
-
-        axios.post('/logout')
-        .then(response => {
-    
-          localStorage.removeItem('access_token')
-          context.commit('destroyToken')
-          resolve(response)
-        })
-        .catch(error => {
-          localStorage.removeItem('access_token')
-          context.commit('destroyToken')
-          reject(error)
-        })
-      })
-    }
-
-  },
-
-  retrieveName(context) {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-   
-    return new Promise((resolve, reject) => {
-
-      axios.get('/user')
-      .then(response => {
-        resolve(response)
-      })
-      .catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-
-
-// Note Actions
-
-
-
-
+ const actions =  {
 
 // Task Actions
 
@@ -314,7 +170,4 @@ destroyToken(state) {
       })
 
     },
-
-
-  }
-})
+  };

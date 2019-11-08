@@ -58,7 +58,7 @@ export default {
     methods: {
         login() {
             this.loading = true;
-            this.$store.dispatch('retrieveToken', {
+            this.$store.dispatch('auth/retrieveToken', {
                 username: this.username,
                 password: this.password,
             })

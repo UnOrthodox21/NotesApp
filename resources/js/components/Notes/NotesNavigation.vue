@@ -1,7 +1,7 @@
  <template>
         <div class="col-4 p-0 m-0 navigation">
             <ul>
-                <li v-for="(note, index) of notes" class="note" v-bind:class="{ 'active': index === activeNote }" @click="changeNote(index)">
+                <li class="note" v-bind:class="{ 'active': index === activeNote }" @click="changeNote(index)">
                     <div>{{note.title}}</div>
                 </li>
                 <li class="new-note" @click="newNote()">+</li>
@@ -20,12 +20,23 @@
       export default {
         name: 'notes-navigation',
         props: ['notes', 'activeNote'],
+        data() {
+        return {
+          newNote: {
+            title: 'Inserted title',
+            content: 'Inserted content',
+            user_id: 1,
+            is_public: 0,
+             },
+        index: 0,
+            }
+        },
         methods: {
-          changeNote (index) {
-            this.$emit('change-note', index)
+          changeNote(index) {
+        
           },
           newNote () {
-            this.$emit('new-note')
+       
           }
         }
       }

@@ -59,7 +59,7 @@ const routes = [
     },
     {
         path: '/tasks/:id', 
-        name: 'tasks',
+        name: 'viewTask',
         component: TestTasksVariable 
     },
     {

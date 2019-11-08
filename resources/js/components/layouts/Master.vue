@@ -18,11 +18,11 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'home' }">Home</router-link>
         </li>
+           <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'notes' }">Notes</router-link>
+          </li>
         <li class="nav-item">
             <router-link v-if="loggedIn" class="nav-link" :to="{ name: 'tasks' }">Tasks</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'notes' }">Notes</router-link>
           </li>
         <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
@@ -52,6 +52,7 @@
 
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
     data() {
       return {
@@ -59,7 +60,7 @@ export default {
       }
     },
      created() {
-     this.$store.dispatch('retrieveName')
+     this.$store.dispatch('auth/retrieveName')
      .then(response => {
        this.name = response.data.name;
      })
@@ -67,7 +68,7 @@ export default {
 
   computed: {
     loggedIn() {
-      return this.$store.getters.loggedIn
+      return this.$store.getters['auth/loggedIn']
     },
   
   },

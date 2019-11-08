@@ -7,7 +7,7 @@ export default {
   name: 'task-remaining',
   computed: {
     remainingTasks() {
-      return this.$store.getters.remainingTasks
+      return this.$store.getters['tasks/remainingTasks'];
     }
   }
 }

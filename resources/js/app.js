@@ -12,7 +12,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
 import Master from './components/layouts/Master.vue'
-import { store } from './store/store'
+import store from './store'
 import CxltToastr from 'cxlt-vue2-toastr'
 
 

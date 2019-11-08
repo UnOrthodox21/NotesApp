@@ -35,12 +35,6 @@ export default {
       'beforeEditCache': '',
     }
   },
-  created() {
-    eventBus.$on('pluralize', this.handlePluralize)
-  },
-  beforeDestroy() {
-    eventBus.$off('pluralize', this.handlePluralize)
-  },
   watch: {
     checkAll() {
       this.completed = this.checkAll ? true : this.task.completed
@@ -55,7 +49,7 @@ export default {
   },
   methods: {
     removeTask(id) {
-      this.$store.dispatch('deleteTask', id)
+      this.$store.dispatch('tasks/deleteTask', id)
     },
     editTask() {
       this.beforeEditCache = this.title
@@ -66,7 +60,7 @@ export default {
         this.title = this.beforeEditCache
       }
       this.editing = false
-      this.$store.dispatch('updateTask', {
+      this.$store.dispatch('tasks/updateTask', {
         'id': this.id,
         'title': this.title,
         'completed': this.completed,

@@ -55,7 +55,7 @@ export default {
     methods: {
 
         register() {
-        this.$store.dispatch('register', {
+        this.$store.dispatch('auth/register', {
             name: this.name,
             email: this.email,
             password: this.password,
@@ -103,7 +103,7 @@ label {
     font-size: 1.5em;
     background-color: #233b5d;
     border-color: white;
-    border-width: 0.20em;
+    border-width: 0.1em;
     border-radius: 5%;
 }
 

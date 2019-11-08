@@ -5,8 +5,9 @@
                 <input type="text" v-model="note.title" class="title" name="title" placeholder="Enter a title" />
                 <label for="content">Content:</label>
                 <textarea class="content" name="content" v-model="note.content" placeholder="Enter some content"></textarea>
-                <button class="delButton" @click="deleteNote()">DELETE NOTE</button>
-                <button class="saveButton" @click="saveNote()">SAVE NOTE</button>
+                <button class="delButton" @click="deleteNote()">DELETE</button>
+                <label class="form-check-label" for="publicCheck">Make this note public</label>
+               <input type="checkbox" class="form-check-input" id="publicCheck">
             </div>
         </div>
     </template>
@@ -20,13 +21,25 @@
       export default {
         name: 'note-form',
         props: ['note'],
+        data() {
+            return {
+
+            }
+        },
         methods: {
-          deleteNote () {
-            this.$emit('delete-note')
+            editNote() {
+
+            },
+            doneEdit() {
+
+            },
+            cancelEdit() {
+
+            },
+            deleteNote () {
+         
           },
-          saveNote () {
-            this.$emit('save-note')
-          }
+
         }
       }
     </script>

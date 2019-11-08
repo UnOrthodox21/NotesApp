@@ -7,12 +7,12 @@ export default {
   name: 'task-clear-completed',
   computed: {
     showClearCompletedButton() {
-      return this.$store.getters.showClearCompletedButton
+      return this.$store.getters['tasks/showClearCompletedButton']
     }
   },
   methods: {
     clearCompletedTasks() {
-      this.$store.dispatch('clearCompletedTasks')
+      this.$store.dispatch('tasks/clearCompletedTasks')
     }
   }
 }

@@ -7,8 +7,8 @@
 <script>
 export default {
     created() {
-        this.$store.dispatch('clearTasks')
-        this.$store.dispatch('destroyToken')
+        this.$store.dispatch('auth/clearTasks')
+        this.$store.dispatch('auth/destroyToken')
           .then(response => {
                 this.$router.push({ name: 'home' })
         })

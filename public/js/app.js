@@ -1864,7 +1864,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     loggedIn: function loggedIn() {
-      return this.$store.getters.loggedIn;
+      return this.$store.getters['auth/loggedIn'];
     }
   }
 });
@@ -1927,16 +1927,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'note-form',
   props: ['note'],
+  data: function data() {
+    return {};
+  },
   methods: {
-    deleteNote: function deleteNote() {
-      this.$emit('delete-note');
-    },
-    saveNote: function saveNote() {
-      this.$emit('save-note');
-    }
+    editNote: function editNote() {},
+    doneEdit: function doneEdit() {},
+    cancelEdit: function cancelEdit() {},
+    deleteNote: function deleteNote() {}
   }
 });
 
@@ -1953,10 +1955,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NotesNavigation_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NotesNavigation.vue */ "./resources/js/components/Notes/NotesNavigation.vue");
 /* harmony import */ var _NoteForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NoteForm.vue */ "./resources/js/components/Notes/NoteForm.vue");
-//
-//
-//
-//
 //
 //
 //
@@ -1986,24 +1984,13 @@ __webpack_require__.r(__webpack_exports__);
       index: 0
     };
   },
-  created: function created() {
-    this.$store.dispatch('retrieveNotes');
-  },
-  computed: {
-    retrieveNotes: function retrieveNotes() {
-      this.$store.dispatch('retrieveNotes');
-    }
-  },
+  created: function created() {},
+  computed: {},
   methods: {
     addNote: function addNote() {
-      this.$store.dispatch('addNote', {
-        note: this.newNote
-      });
-      this.index++;
+      ;
     },
-    changeNote: function changeNote(index) {
-      this.index = index;
-    },
+    changeNote: function changeNote(index) {},
     saveNote: function saveNote() {},
     deleteNote: function deleteNote() {}
   }
@@ -2118,13 +2105,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'notes-navigation',
   props: ['notes', 'activeNote'],
+  data: function data() {
+    return {
+      newNote: {
+        title: 'Inserted title',
+        content: 'Inserted content',
+        user_id: 1,
+        is_public: 0
+      },
+      index: 0
+    };
+  },
   methods: {
-    changeNote: function changeNote(index) {
-      this.$emit('change-note', index);
-    },
-    newNote: function newNote() {
-      this.$emit('new-note');
-    }
+    changeNote: function changeNote(index) {},
+    newNote: function newNote() {}
   }
 });
 
@@ -2176,12 +2170,12 @@ __webpack_require__.r(__webpack_exports__);
   name: 'task-check-all',
   computed: {
     anyRemainingTasks: function anyRemainingTasks() {
-      return this.$store.getters.anyRemainingTasks;
+      return this.$store.getters['tasks/anyRemainingTasks'];
     }
   },
   methods: {
     allChecked: function allChecked() {
-      this.$store.dispatch('checkAllTasks', event.target.checked);
+      this.$store.dispatch('tasks/checkAllTasks', event.target.checked);
     }
   }
 });
@@ -2205,12 +2199,12 @@ __webpack_require__.r(__webpack_exports__);
   name: 'task-clear-completed',
   computed: {
     showClearCompletedButton: function showClearCompletedButton() {
-      return this.$store.getters.showClearCompletedButton;
+      return this.$store.getters['tasks/showClearCompletedButton'];
     }
   },
   methods: {
     clearCompletedTasks: function clearCompletedTasks() {
-      this.$store.dispatch('clearCompletedTasks');
+      this.$store.dispatch('tasks/clearCompletedTasks');
     }
   }
 });
@@ -2295,12 +2289,6 @@ __webpack_require__.r(__webpack_exports__);
       'beforeEditCache': ''
     };
   },
-  created: function created() {
-    eventBus.$on('pluralize', this.handlePluralize);
-  },
-  beforeDestroy: function beforeDestroy() {
-    eventBus.$off('pluralize', this.handlePluralize);
-  },
   watch: {
     checkAll: function checkAll() {
       this.completed = this.checkAll ? true : this.task.completed;
@@ -2315,7 +2303,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     removeTask: function removeTask(id) {
-      this.$store.dispatch('deleteTask', id);
+      this.$store.dispatch('tasks/deleteTask', id);
     },
     editTask: function editTask() {
       this.beforeEditCache = this.title;
@@ -2327,7 +2315,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.editing = false;
-      this.$store.dispatch('updateTask', {
+      this.$store.dispatch('tasks/updateTask', {
         'id': this.id,
         'title': this.title,
         'completed': this.completed,
@@ -2360,7 +2348,7 @@ __webpack_require__.r(__webpack_exports__);
   name: 'task-remaining',
   computed: {
     remainingTasks: function remainingTasks() {
-      return this.$store.getters.remainingTasks;
+      return this.$store.getters['tasks/remainingTasks'];
     }
   }
 });
@@ -2407,6 +2395,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2427,14 +2417,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.$store.dispatch('retrieveTasks');
+    this.$store.dispatch('tasks/retrieveTasks');
   },
   computed: {
     anyRemainingTasks: function anyRemainingTasks() {
-      return this.$store.getters.anyRemainingTasks;
+      return this.$store.getters['tasks/anyRemainingTasks'];
     },
     tasksFiltered: function tasksFiltered() {
-      return this.$store.getters.tasksFiltered;
+      return this.$store.getters['tasks/tasksFiltered'];
     }
   },
   methods: {
@@ -2443,7 +2433,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      this.$store.dispatch('addTask', {
+      this.$store.dispatch('tasks/addTask', {
         id: this.idForTask,
         title: this.newTask
       });
@@ -2525,7 +2515,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      this.$store.dispatch('retrieveToken', {
+      this.$store.dispatch('auth/retrieveToken', {
         username: this.username,
         password: this.password
       }).then(function (response) {
@@ -2564,8 +2554,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.$store.dispatch('clearTasks');
-    this.$store.dispatch('destroyToken').then(function (response) {
+    this.$store.dispatch('auth/clearTasks');
+    this.$store.dispatch('auth/destroyToken').then(function (response) {
       _this.$router.push({
         name: 'home'
       });
@@ -2641,7 +2631,7 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      this.$store.dispatch('register', {
+      this.$store.dispatch('auth/register', {
         name: this.name,
         email: this.email,
         password: this.password
@@ -2677,6 +2667,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -2730,6 +2721,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2739,13 +2731,13 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.$store.dispatch('retrieveName').then(function (response) {
+    this.$store.dispatch('auth/retrieveName').then(function (response) {
       _this.name = response.data.name;
     });
   },
   computed: {
     loggedIn: function loggedIn() {
-      return this.$store.getters.loggedIn;
+      return this.$store.getters['auth/loggedIn'];
     }
   }
 });
@@ -7323,7 +7315,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.task-input {\n        width: 100%;\n        padding: 10px 18px;\n        font-size: 1.5em;\n        margin-bottom: 16px;\n        outline: 0;\n&:focus {\n        outline: 0;\n}\n}\n.task-item {\n        font-size: 1.3em;\n        margin-bottom: 12px;\n        display: -webkit-box;\n        display: flex;\n        -webkit-box-align: center;\n                align-items: center;\n        -webkit-box-pack: justify;\n                justify-content: space-between;\n        -webkit-animation-duration: 0.3s;\n                animation-duration: 0.3s;\n}\n.remove-item {\n        cursor: pointer;\n        font-size: 2em;\n        margin-left: 14px;\n}\n.remove-item:hover {\n        color: #ff3337;\n}\n.task-item-left {\n        display: -webkit-box;\n        display: flex;\n        -webkit-box-align: center;\n                align-items: center;\n}\n.task-item-label {\n        font-size: 24px;\n        margin-left: 12px;\n        width: 100%;\n        padding: 10px;\n        border: none;\n}\ntextarea:focus, input:focus{\n    outline-style: solid;\n    outline-color: #30b8a6;\n    outline-width: 2px;\n}\n.task-item-edit {\n        font-size: 24px;\n        background: none;\n        color: #30b8a6;\n        margin-left: 12px;\n        width: 100%;\n        padding: 10px;\n        border: none;\n}\n.btn-tasks {\n    font-size: 1.75em;\n    background-color: white;\n    color: rgb(15, 29, 44);\n    border-radius: 7.5%;\n}\n.btn-tasks:hover {\n    background-color: #233b5d;\n    color: white;\n    border-color: #233b5d;\n}\n.btn-tasks:focus {\n      outline: none;\n}\n.btn-tasks-clear:hover {\n    color: #ff3337;\n}\n.active {\n    background: #233b5d;\n    border-color: #233b5d;\n    color: #30b8a6;\n}\n.active:hover {\n    background-color:#233b5d;\n}\n.completed {\n        text-decoration: line-through;\n        color: grey;\n}\n.extra-container {\n        display: -webkit-box;\n        display: flex;\n        -webkit-box-align: center;\n                align-items: center;\n        -webkit-box-pack: justify;\n                justify-content: space-between;\n        font-size: 16px;\n        border-top: 1px solid lightgrey;\n        padding-top: 14px;\n        margin-bottom: 14px;\n}\nbutton {\n        font-size: 14px;\n        background-color: white;\n        -webkit-appearance: none;\n           -moz-appearance: none;\n                appearance: none;\n}\n.fade-enter-active, .fade-leave-active {\n        -webkit-transition: opacity 0.2s;\n        transition: opacity 0.2s;\n}\n.fade-enter, .fade-leave-to {\n        opacity: 0;\n}\n\n\n\n", ""]);
+exports.push([module.i, "\n.task-input {\n        width: 100%;\n        padding: 10px 18px;\n        font-size: 1.5em;\n        margin-bottom: 16px;\n        outline: 0;\n}\n.task-item {\n        font-size: 1.3em;\n        margin-bottom: 12px;\n        display: -webkit-box;\n        display: flex;\n        -webkit-box-align: center;\n                align-items: center;\n        -webkit-box-pack: justify;\n                justify-content: space-between;\n        -webkit-animation-duration: 0.3s;\n                animation-duration: 0.3s;\n}\n.remove-item {\n        cursor: pointer;\n        font-size: 2em;\n        margin-left: 14px;\n}\n.remove-item:hover {\n        color: #ff3337;\n}\n.task-item-left {\n        display: -webkit-box;\n        display: flex;\n        -webkit-box-align: center;\n                align-items: center;\n}\n.task-item-label {\n        font-size: 24px;\n        margin-left: 12px;\n        width: 100%;\n        padding: 10px;\n        border: none;\n}\ntextarea:focus, input:focus{\n    outline-style: solid;\n    outline-color: #30b8a6;\n    outline-width: 2px;\n}\n.task-item-edit {\n        font-size: 24px;\n        background: none;\n        color: #30b8a6;\n        margin-left: 12px;\n        width: 100%;\n        padding: 10px;\n        border: none;\n}\n.btn-tasks {\n    font-size: 1.75em;\n    background-color: white;\n    color: rgb(15, 29, 44);\n    border-radius: 7.5%;\n}\n.btn-tasks:hover {\n    background-color: #233b5d;\n    color: white;\n    border-color: #233b5d;\n}\n.btn-tasks:focus {\n      outline: none;\n}\n.btn-tasks-clear:hover {\n    color: #ff3337;\n}\n.active {\n    background: #233b5d;\n    border-color: #233b5d;\n    color: #30b8a6;\n}\n.active:hover {\n    background-color:#233b5d;\n}\n.completed {\n        text-decoration: line-through;\n        color: grey;\n}\n.extra-container {\n        display: -webkit-box;\n        display: flex;\n        -webkit-box-align: center;\n                align-items: center;\n        -webkit-box-pack: justify;\n                justify-content: space-between;\n        font-size: 16px;\n        border-top: 1px solid lightgrey;\n        padding-top: 14px;\n        margin-bottom: 14px;\n}\nbutton {\n        font-size: 14px;\n        background-color: white;\n        -webkit-appearance: none;\n           -moz-appearance: none;\n                appearance: none;\n}\n.fade-enter-active, .fade-leave-active {\n        -webkit-transition: opacity 0.2s;\n        transition: opacity 0.2s;\n}\n.fade-enter, .fade-leave-to {\n        opacity: 0;\n}\n\n\n\n", ""]);
 
 // exports
 
@@ -7361,7 +7353,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nlabel {\n    font-size: 1.5em;\n}\n.loginContainer {\n   background-color: none;\n}\n.login-heading {\n    font-size: 3em;\n}\n.login-input {\n    text-align: center;\n    font-size: 1.5em;\n}\n.login-button {\n    font-size: 1.5em;\n    background-color: #233b5d;\n    border-color: white;\n    border-width: 0.20em;\n    border-radius: 5%;\n}\n.login-button:hover {\n    background-color: #233b5d;\n    color: #30b8a6;\n    border-color: #30b8a6;\n}\n\n", ""]);
+exports.push([module.i, "\nlabel {\n    font-size: 1.5em;\n}\n.loginContainer {\n   background-color: none;\n}\n.login-heading {\n    font-size: 3em;\n}\n.login-input {\n    text-align: center;\n    font-size: 1.5em;\n}\n.login-button {\n    font-size: 1.5em;\n    background-color: #233b5d;\n    border-color: white;\n    border-width: 0.1em;\n    border-radius: 5%;\n}\n.login-button:hover {\n    background-color: #233b5d;\n    color: #30b8a6;\n    border-color: #30b8a6;\n}\n\n", ""]);
 
 // exports
 
@@ -39385,21 +39377,19 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("DELETE NOTE")]
+            [_vm._v("DELETE")]
           ),
           _vm._v(" "),
           _c(
-            "button",
-            {
-              staticClass: "saveButton",
-              on: {
-                click: function($event) {
-                  return _vm.saveNote()
-                }
-              }
-            },
-            [_vm._v("SAVE NOTE")]
-          )
+            "label",
+            { staticClass: "form-check-label", attrs: { for: "publicCheck" } },
+            [_vm._v("Make this note public")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-check-input",
+            attrs: { type: "checkbox", id: "publicCheck" }
+          })
         ])
       : _vm._e()
   ])
@@ -39426,46 +39416,27 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "page-wrapper container-fluid m-0 p-0",
-      attrs: { id: "NotesApp" }
-    },
-    [
-      _c(
-        "div",
-        { staticClass: "row h-100 m-0 p-0 appRow" },
-        [
-          _vm._l(_vm.retrieveNotes, function(note) {
-            return _c("notes-navigation")
-          }),
-          _vm._v(" "),
-          _c("note-form", {
-            attrs: { note: _vm.notes[_vm.index] },
-            on: { "save-note": _vm.saveNote, "delete-note": _vm.deleteNote }
-          })
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row h-100 m-0 p-0 appRow" },
-        [
-          _c(
-            "router-link",
-            {
-              staticClass: "btn btn-m btn-notes manageNotes ml-auto",
-              attrs: { to: { name: "notes-list" } }
-            },
-            [_vm._v("Manage all Notes")]
-          )
-        ],
-        1
-      )
-    ]
-  )
+  return _c("div", { staticClass: "container-fluid m-0 p-0" }, [
+    _c(
+      "div",
+      { staticClass: "row h-100 m-0 p-0 appRow" },
+      [
+        _c("notes-navigation", { attrs: { notes: _vm.retrieveNotes } }),
+        _vm._v(" "),
+        _c("note-form"),
+        _vm._v(" "),
+        _c(
+          "router-link",
+          {
+            staticClass: "btn btn-m btn-notes manageNotes ml-auto",
+            attrs: { to: { name: "notes-list" } }
+          },
+          [_vm._v("Manage all Notes")]
+        )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39594,40 +39565,34 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-4 p-0 m-0 navigation" }, [
-    _c(
-      "ul",
-      [
-        _vm._l(_vm.notes, function(note, index) {
-          return _c(
-            "li",
-            {
-              staticClass: "note",
-              class: { active: index === _vm.activeNote },
-              on: {
-                click: function($event) {
-                  return _vm.changeNote(index)
-                }
-              }
-            },
-            [_c("div", [_vm._v(_vm._s(note.title))])]
-          )
-        }),
-        _vm._v(" "),
-        _c(
-          "li",
-          {
-            staticClass: "new-note",
-            on: {
-              click: function($event) {
-                return _vm.newNote()
-              }
+    _c("ul", [
+      _c(
+        "li",
+        {
+          staticClass: "note",
+          class: { active: _vm.index === _vm.activeNote },
+          on: {
+            click: function($event) {
+              return _vm.changeNote(_vm.index)
             }
-          },
-          [_vm._v("+")]
-        )
-      ],
-      2
-    )
+          }
+        },
+        [_c("div", [_vm._v(_vm._s(_vm.note.title))])]
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        {
+          staticClass: "new-note",
+          on: {
+            click: function($event) {
+              return _vm.newNote()
+            }
+          }
+        },
+        [_vm._v("+")]
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -39976,94 +39941,96 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid my-3 px-5" },
-    [
-      _c("h1", { staticClass: "pageHeader text-center my-5" }, [
-        _vm._v("Tasks")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.newTask,
-            expression: "newTask"
-          }
-        ],
-        staticClass: "task-input",
-        attrs: { type: "text", placeholder: "What needs to be done" },
-        domProps: { value: _vm.newTask },
-        on: {
-          keyup: function($event) {
-            if (
-              !$event.type.indexOf("key") &&
-              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-            ) {
-              return null
+  return _c("div", { staticClass: "container-fluid my-3" }, [
+    _c(
+      "div",
+      { staticClass: "col-8 mx-auto px-0" },
+      [
+        _c("h1", { staticClass: "pageHeader text-center my-5" }, [
+          _vm._v("Tasks")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newTask,
+              expression: "newTask"
             }
-            return _vm.addTask($event)
-          },
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+          ],
+          staticClass: "task-input",
+          attrs: { type: "text", placeholder: "What needs to be done" },
+          domProps: { value: _vm.newTask },
+          on: {
+            keyup: function($event) {
+              if (
+                !$event.type.indexOf("key") &&
+                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+              ) {
+                return null
+              }
+              return _vm.addTask($event)
+            },
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.newTask = $event.target.value
             }
-            _vm.newTask = $event.target.value
           }
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "transition-group",
-        {
-          attrs: {
-            name: "fade",
-            "enter-active-class": "animated fadeInUp",
-            "leave-active-class": "animated fadeOutDown"
-          }
-        },
-        _vm._l(_vm.tasksFiltered, function(task) {
-          return _c("task-item", {
-            key: task.id,
-            attrs: { task: task, checkAll: !_vm.anyRemainingTasks }
-          })
         }),
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "extra-container" },
-        [_c("task-check-all"), _vm._v(" "), _c("task-items-remaining")],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "extra-container" },
-        [
-          _c("task-filtered"),
-          _vm._v(" "),
-          _c(
-            "div",
-            [
-              _c(
-                "transition",
-                { attrs: { name: "fade" } },
-                [_c("task-clear-completed")],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
+        _vm._v(" "),
+        _c(
+          "transition-group",
+          {
+            attrs: {
+              name: "fade",
+              "enter-active-class": "animated fadeInUp",
+              "leave-active-class": "animated fadeOutDown"
+            }
+          },
+          _vm._l(_vm.tasksFiltered, function(task) {
+            return _c("task-item", {
+              key: task.id,
+              attrs: { task: task, checkAll: !_vm.anyRemainingTasks }
+            })
+          }),
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "extra-container" },
+          [_c("task-check-all"), _vm._v(" "), _c("task-items-remaining")],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "extra-container" },
+          [
+            _c("task-filtered"),
+            _vm._v(" "),
+            _c(
+              "div",
+              [
+                _c(
+                  "transition",
+                  { attrs: { name: "fade" } },
+                  [_c("task-clear-completed")],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -40495,6 +40462,22 @@ var render = function() {
                   "li",
                   { staticClass: "nav-item" },
                   [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "nav-link",
+                        attrs: { to: { name: "notes" } }
+                      },
+                      [_vm._v("Notes")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
                     _vm.loggedIn
                       ? _c(
                           "router-link",
@@ -40505,22 +40488,6 @@ var render = function() {
                           [_vm._v("Tasks")]
                         )
                       : _vm._e()
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "nav-link",
-                        attrs: { to: { name: "notes" } }
-                      },
-                      [_vm._v("Notes")]
-                    )
                   ],
                   1
                 ),
@@ -56722,7 +56689,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /* harmony import */ var _components_layouts_Master_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/layouts/Master.vue */ "./resources/js/components/layouts/Master.vue");
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store/store */ "./resources/js/store/store.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 /* harmony import */ var cxlt_vue2_toastr__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! cxlt-vue2-toastr */ "./node_modules/cxlt-vue2-toastr/dist/js/cxlt-vue2-toastr.js");
 /* harmony import */ var cxlt_vue2_toastr__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(cxlt_vue2_toastr__WEBPACK_IMPORTED_MODULE_5__);
 /**
@@ -56759,7 +56726,7 @@ router.beforeEach(function (to, from, next) {
   })) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!_store_store__WEBPACK_IMPORTED_MODULE_4__["store"].getters.loggedIn) {
+    if (!_store__WEBPACK_IMPORTED_MODULE_4__["default"].getters.loggedIn) {
       next({
         name: 'login'
       });
@@ -56771,7 +56738,7 @@ router.beforeEach(function (to, from, next) {
   })) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (_store_store__WEBPACK_IMPORTED_MODULE_4__["store"].getters.loggedIn) {
+    if (_store__WEBPACK_IMPORTED_MODULE_4__["default"].getters.loggedIn) {
       next({
         name: 'tasks'
       });
@@ -56785,7 +56752,7 @@ router.beforeEach(function (to, from, next) {
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   router: router,
-  store: _store_store__WEBPACK_IMPORTED_MODULE_4__["store"],
+  store: _store__WEBPACK_IMPORTED_MODULE_4__["default"],
   components: {
     Master: _components_layouts_Master_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
@@ -58409,7 +58376,7 @@ var routes = [{
   }
 }, {
   path: '/tasks/:id',
-  name: 'tasks',
+  name: 'viewTask',
   component: _components_TestTasksVariable__WEBPACK_IMPORTED_MODULE_8__["default"]
 }, {
   path: '/notes/list',
@@ -58420,270 +58387,356 @@ var routes = [{
 
 /***/ }),
 
-/***/ "./resources/js/store/store.js":
+/***/ "./resources/js/store/index.js":
 /*!*************************************!*\
-  !*** ./resources/js/store/store.js ***!
+  !*** ./resources/js/store/index.js ***!
   \*************************************/
-/*! exports provided: store */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _modules_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/auth */ "./resources/js/store/modules/auth.js");
+/* harmony import */ var _modules_tasks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/tasks */ "./resources/js/store/modules/tasks.js");
+/* harmony import */ var _modules_notes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/notes */ "./resources/js/store/modules/notes.js");
+
+
+
 
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var namespaced = true;
 axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'http://notes.docker.lv/api';
-var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
-  state: {
-    token: localStorage.getItem('access_token') || null,
-    notes: [{
-      title: 'Say hi',
-      content: 'Hey you',
-      user_id: 2,
-      is_public: 0
-    }, {
-      title: 'Make food',
-      content: 'You have to wash the dishes',
-      user_id: 2,
-      is_public: 0
-    }, {
-      title: 'Clean the room',
-      content: 'You have to clean the room',
-      user_id: 2,
-      is_public: 0
-    }],
-    tasks: [],
-    filter: 'all'
-  },
-  getters: {
-    // Auth Getters
-    loggedIn: function loggedIn(state) {
-      return state.token != null;
-    },
-    // Notes Getters
-    retrieveNotes: function retrieveNotes(state) {
-      return state.notes;
-    },
-    // Tasks Getters
-    remainingTasks: function remainingTasks(state) {
-      return state.tasks.filter(function (task) {
-        return !task.completed;
-      }).length;
-    },
-    anyRemainingTasks: function anyRemainingTasks(state, getters) {
-      return getters.remainingTasks != 0;
-    },
-    tasksFiltered: function tasksFiltered(state) {
-      if (state.filter == 'all') {
-        return state.tasks;
-      } else if (state.filter == 'active') {
-        return state.tasks.filter(function (task) {
-          return !task.completed;
-        });
-      } else if (state.filter == 'completed') {
-        return state.tasks.filter(function (task) {
-          return task.completed;
-        });
-      }
-
-      return state.tasks;
-    },
-    showClearCompletedButton: function showClearCompletedButton(state) {
-      return state.tasks.filter(function (task) {
-        return task.completed;
-      }).length > 0;
-    }
-  },
-  mutations: {
-    // Auth Mutations
-    retrieveToken: function retrieveToken(state, token) {
-      state.token = token;
-    },
-    destroyToken: function destroyToken(state) {
-      state.token = null;
-    },
-    // Notes Mutations
-    // Task Mutations
-    clearTasks: function clearTasks(state) {
-      state.tasks = [];
-    },
-    addTask: function addTask(state, task) {
-      state.tasks.push({
-        id: task.id,
-        title: task.title,
-        completed: false,
-        editing: false
-      });
-    },
-    updateTask: function updateTask(state, task) {
-      var index = state.tasks.findIndex(function (item) {
-        return item.id == task.id;
-      });
-      state.tasks.splice(index, 1, {
-        'id': task.id,
-        'title': task.title,
-        'completed': task.completed,
-        'editing': task.editing
-      });
-    },
-    deleteTask: function deleteTask(state, id) {
-      var index = state.tasks.findIndex(function (item) {
-        return item.id == id;
-      });
-      state.tasks.splice(index, 1);
-    },
-    checkAllTasks: function checkAllTasks(state, checked) {
-      state.tasks.forEach(function (task) {
-        return task.completed = checked;
-      });
-    },
-    updateTasksFilter: function updateTasksFilter(state, filter) {
-      state.filter = filter;
-    },
-    clearCompletedTasks: function clearCompletedTasks(state) {
-      state.tasks = state.tasks.filter(function (task) {
-        return !task.completed;
-      });
-    },
-    retrieveTasks: function retrieveTasks(state, tasks) {
-      state.tasks = tasks;
-    }
-  },
-  actions: {
-    // Auth Actions
-    register: function register(context, data) {
-      return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/register', {
-          name: data.name,
-          email: data.email,
-          password: data.password
-        }).then(function (response) {
-          resolve(response);
-        })["catch"](function (error) {
-          reject(error);
-        });
-      });
-    },
-    retrieveToken: function retrieveToken(context, credentials) {
-      return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/login', {
-          username: credentials.username,
-          password: credentials.password
-        }).then(function (response) {
-          var token = response.data.access_token;
-          localStorage.setItem('access_token', token);
-          context.commit('retrieveToken', token);
-          resolve(response);
-        })["catch"](function (error) {
-          console.log(error);
-          reject(error);
-        });
-      });
-    },
-    destroyToken: function destroyToken(context) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
-
-      if (context.getters.loggedIn) {
-        return new Promise(function (resolve, reject) {
-          axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/logout').then(function (response) {
-            localStorage.removeItem('access_token');
-            context.commit('destroyToken');
-            resolve(response);
-          })["catch"](function (error) {
-            localStorage.removeItem('access_token');
-            context.commit('destroyToken');
-            reject(error);
-          });
-        });
-      }
-    },
-    retrieveName: function retrieveName(context) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
-      return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/user').then(function (response) {
-          resolve(response);
-        })["catch"](function (error) {
-          reject(error);
-        });
-      });
-    },
-    // Note Actions
-    // Task Actions
-    retrieveTasks: function retrieveTasks(context) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/tasks').then(function (response) {
-        context.commit('retrieveTasks', response.data);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    clearTasks: function clearTasks(context) {
-      context.commit('clearTasks');
-    },
-    addTask: function addTask(context, task) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/tasks', {
-        title: task.title,
-        completed: false
-      }).then(function (response) {
-        context.commit('addTask', response.data);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    updateTask: function updateTask(context, task) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.patch('/tasks/' + task.id, {
-        title: task.title,
-        completed: task.completed
-      }).then(function (response) {
-        context.commit('updateTask', response.data);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    deleteTask: function deleteTask(context, id) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]('/tasks/' + id).then(function (response) {
-        context.commit('deleteTask', id);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    checkAllTasks: function checkAllTasks(context, checked) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.patch('/tasksCheckAll', {
-        completed: checked
-      }).then(function (response) {
-        context.commit('checkAllTasks', checked);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    updateTasksFilter: function updateTasksFilter(context, filter) {
-      context.commit('updateTasksFilter', filter);
-    },
-    clearCompletedTasks: function clearCompletedTasks(context) {
-      var completed = store.state.tasks.filter(function (task) {
-        return task.completed;
-      }).map(function (task) {
-        return task.id;
-      });
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]('/tasksDeleteCompleted', {
-        data: {
-          tasks: completed
-        }
-      }).then(function (response) {
-        context.commit('clearCompletedTasks');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  namespaced: namespaced,
+  modules: {
+    auth: _modules_auth__WEBPACK_IMPORTED_MODULE_3__["default"],
+    tasks: _modules_tasks__WEBPACK_IMPORTED_MODULE_4__["default"],
+    notes: _modules_notes__WEBPACK_IMPORTED_MODULE_5__["default"]
   }
+}));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/auth.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/modules/auth.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
 });
+var state = {
+  token: localStorage.getItem('access_token') || null
+};
+var getters = {
+  // Auth Getters
+  loggedIn: function loggedIn(state) {
+    return state.token != null;
+  }
+};
+var mutations = {
+  // Auth Mutations
+  retrieveToken: function retrieveToken(state, token) {
+    state.token = token;
+  },
+  destroyToken: function destroyToken(state) {
+    state.token = null;
+  }
+};
+var actions = {
+  // Auth Actions
+  register: function register(context, data) {
+    return new Promise(function (resolve, reject) {
+      axios.post('/register', {
+        name: data.name,
+        email: data.email,
+        password: data.password
+      }).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  retrieveToken: function retrieveToken(context, credentials) {
+    return new Promise(function (resolve, reject) {
+      axios.post('/login', {
+        username: credentials.username,
+        password: credentials.password
+      }).then(function (response) {
+        var token = response.data.access_token;
+        localStorage.setItem('access_token', token);
+        context.commit('retrieveToken', token);
+        resolve(response);
+      })["catch"](function (error) {
+        console.log(error);
+        reject(error);
+      });
+    });
+  },
+  destroyToken: function destroyToken(context) {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
+
+    if (context.getters.loggedIn) {
+      return new Promise(function (resolve, reject) {
+        axios.post('/logout').then(function (response) {
+          localStorage.removeItem('access_token');
+          context.commit('destroyToken');
+          resolve(response);
+        })["catch"](function (error) {
+          localStorage.removeItem('access_token');
+          context.commit('destroyToken');
+          reject(error);
+        });
+      });
+    }
+  },
+  retrieveName: function retrieveName(context) {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
+    return new Promise(function (resolve, reject) {
+      axios.get('/user').then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/notes.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/notes.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+var state = {
+  notes: [{
+    title: 'Say hi',
+    content: 'Hey you',
+    user_id: 2,
+    is_public: 0
+  }, {
+    title: 'Make food',
+    content: 'You have to wash the dishes',
+    user_id: 2,
+    is_public: 0
+  }, {
+    title: 'Clean the room',
+    content: 'You have to clean the room',
+    user_id: 2,
+    is_public: 0
+  }]
+};
+var getters = {
+  // Notes Getters
+  retrieveNotes: function retrieveNotes(state) {
+    return state.notes;
+  }
+};
+var mutations = {// Notes Mutations
+};
+var actions = {// Note Actions
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/tasks.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/tasks.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+namespaced: true;
+
+var state = {
+  tasks: [],
+  filter: 'all'
+};
+var getters = {
+  // Tasks Getters
+  remainingTasks: function remainingTasks(state) {
+    return state.tasks.filter(function (task) {
+      return !task.completed;
+    }).length;
+  },
+  anyRemainingTasks: function anyRemainingTasks(state, getters) {
+    return getters.remainingTasks != 0;
+  },
+  tasksFiltered: function tasksFiltered(state) {
+    if (state.filter == 'all') {
+      return state.tasks;
+    } else if (state.filter == 'active') {
+      return state.tasks.filter(function (task) {
+        return !task.completed;
+      });
+    } else if (state.filter == 'completed') {
+      return state.tasks.filter(function (task) {
+        return task.completed;
+      });
+    }
+
+    return state.tasks;
+  },
+  showClearCompletedButton: function showClearCompletedButton(state) {
+    return state.tasks.filter(function (task) {
+      return task.completed;
+    }).length > 0;
+  }
+};
+var mutations = {
+  // Task Mutations
+  clearTasks: function clearTasks(state) {
+    state.tasks = [];
+  },
+  addTask: function addTask(state, task) {
+    state.tasks.push({
+      id: task.id,
+      title: task.title,
+      completed: false,
+      editing: false
+    });
+  },
+  updateTask: function updateTask(state, task) {
+    var index = state.tasks.findIndex(function (item) {
+      return item.id == task.id;
+    });
+    state.tasks.splice(index, 1, {
+      'id': task.id,
+      'title': task.title,
+      'completed': task.completed,
+      'editing': task.editing
+    });
+  },
+  deleteTask: function deleteTask(state, id) {
+    var index = state.tasks.findIndex(function (item) {
+      return item.id == id;
+    });
+    state.tasks.splice(index, 1);
+  },
+  checkAllTasks: function checkAllTasks(state, checked) {
+    state.tasks.forEach(function (task) {
+      return task.completed = checked;
+    });
+  },
+  updateTasksFilter: function updateTasksFilter(state, filter) {
+    state.filter = filter;
+  },
+  clearCompletedTasks: function clearCompletedTasks(state) {
+    state.tasks = state.tasks.filter(function (task) {
+      return !task.completed;
+    });
+  },
+  retrieveTasks: function retrieveTasks(state, tasks) {
+    state.tasks = tasks;
+  }
+};
+var actions = {
+  // Task Actions
+  retrieveTasks: function retrieveTasks(context) {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
+    axios.get('/tasks').then(function (response) {
+      context.commit('retrieveTasks', response.data);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  clearTasks: function clearTasks(context) {
+    context.commit('clearTasks');
+  },
+  addTask: function addTask(context, task) {
+    axios.post('/tasks', {
+      title: task.title,
+      completed: false
+    }).then(function (response) {
+      context.commit('addTask', response.data);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  updateTask: function updateTask(context, task) {
+    axios.patch('/tasks/' + task.id, {
+      title: task.title,
+      completed: task.completed
+    }).then(function (response) {
+      context.commit('updateTask', response.data);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  deleteTask: function deleteTask(context, id) {
+    axios["delete"]('/tasks/' + id).then(function (response) {
+      context.commit('deleteTask', id);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  checkAllTasks: function checkAllTasks(context, checked) {
+    axios.patch('/tasksCheckAll', {
+      completed: checked
+    }).then(function (response) {
+      context.commit('checkAllTasks', checked);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  updateTasksFilter: function updateTasksFilter(context, filter) {
+    context.commit('updateTasksFilter', filter);
+  },
+  clearCompletedTasks: function clearCompletedTasks(context) {
+    var completed = store.state.tasks.filter(function (task) {
+      return task.completed;
+    }).map(function (task) {
+      return task.id;
+    });
+    axios["delete"]('/tasksDeleteCompleted', {
+      data: {
+        tasks: completed
+      }
+    }).then(function (response) {
+      context.commit('clearCompletedTasks');
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  }
+};
 
 /***/ }),
 
